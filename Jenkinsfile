@@ -31,25 +31,11 @@ pipeline {
           }
           
       }
-      stage('Deploy to local kubernetes') {
-               when {
-            branch 'main'
-               }
-               options {
-            timeout(time: 1, unit: 'HOURS') 
-         }
-          steps {
-            input message: "Deploy?"
-         }
-         post {
-            success{
+           stage('Deploy to local kubernetes') {
+        steps {
            script{
               kubernetesDeploy(configs: "k8s-web-to-nginx.yaml" , kubeconfigId: "87147743-7e89-4213-9b8c-dede4ebd6c75")
            }
-            }
-            aborted {
-               echo "Production Deploy Denied"
-            }
          }
       }
    }
