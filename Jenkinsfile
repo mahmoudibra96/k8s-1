@@ -17,5 +17,19 @@ pipeline {
             """)
          }
       }
+            stage('Pushing container to docker hub')  {
+          steps {
+              echo "Workspace is $WORKSPACE"
+              dir("$WORKSPACE/k8s-web-hello") {
+              script {
+                  docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+                      def image = docker.build('mahmoudibrahem125/node_app:latest')
+                      image.push()
+                  }
+              }
+              }
+          }
+          
+      }
    }
 }
