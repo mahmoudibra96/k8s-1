@@ -17,7 +17,7 @@ pipeline {
             """)
          }
       }
-            stage('Pushing container to docker hub')  {
+            stage('Pushing image to docker hub')  {
           steps {
               echo "Workspace is $WORKSPACE"
               dir("$WORKSPACE/k8s-web-hello") {
@@ -30,6 +30,13 @@ pipeline {
               }
           }
           
+      }
+                 stage('Deploy to local kubernetes') {
+        steps {
+           script{
+              kubernetesDeploy(configs: "k8s-web-to-nginx.yaml" , kubeconfigId: "87147743-7e89-4213-9b8c-dede4ebd6c75")
+           }
+         }
       }
    }
 }
